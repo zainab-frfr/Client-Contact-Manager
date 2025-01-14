@@ -178,15 +178,9 @@ void inputInformation(BuildContext context){
 
 void editInformation(BuildContext context){
   TextEditingController myClientController = TextEditingController();
-  TextEditingController name1 = TextEditingController();
-  TextEditingController name2 = TextEditingController();
-  TextEditingController name3 = TextEditingController();
-  TextEditingController email1 = TextEditingController();
-  TextEditingController email2 = TextEditingController();
-  TextEditingController email3 = TextEditingController();
-  TextEditingController phnNum1 = TextEditingController();
-  TextEditingController phnNum2 = TextEditingController();
-  TextEditingController phnNum3 = TextEditingController();
+
+  TextEditingController attribute = TextEditingController();
+  TextEditingController value = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -203,32 +197,12 @@ void editInformation(BuildContext context){
               child: Column(
                 children: [
                   MyInputField(labelText: 'Client Name', obscureText: false, controller: myClientController),
+                  const SizedBox(height: 12,),
+                  MyInputField(labelText: 'Attribute', obscureText: false, controller: attribute),
+                  const SizedBox(height: 1,),
+                  const Text('Attribute: name1/email1/phnNum1/name2/email2/phnNum2..', style:TextStyle(color: Colors.grey, fontSize: 10)),
                   const SizedBox(height: 10,),
-                  const Text('Contact 1', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                  const SizedBox(height: 10,),
-                  MyInputField(labelText: 'Name', obscureText: false, controller: name1),
-                  const SizedBox(height: 5,),
-                  MyInputField(labelText: 'Email', obscureText: false, controller: email1),
-                  const SizedBox(height: 5,),
-                  MyInputField(labelText: 'Phone Number', obscureText: false, controller: phnNum1),
-                  
-                  const SizedBox(height: 10,),
-                  const Text('Contact 2', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                  const SizedBox(height: 10,),
-                  MyInputField(labelText: 'Name', obscureText: false, controller: name2),
-                  const SizedBox(height: 5,),
-                  MyInputField(labelText: 'Email', obscureText: false, controller: email2),
-                  const SizedBox(height: 5,),
-                  MyInputField(labelText: 'Phone Number', obscureText: false, controller: phnNum2),
-                  
-                  const SizedBox(height: 10,),
-                  const Text('Contact 3', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                  const SizedBox(height: 10,),
-                  MyInputField(labelText: 'Name', obscureText: false, controller: name3),
-                  const SizedBox(height: 5,),
-                  MyInputField(labelText: 'Email', obscureText: false, controller: email3),
-                  const SizedBox(height: 5,),
-                  MyInputField(labelText: 'Phone Number', obscureText: false, controller: phnNum3),
+                  MyInputField(labelText: 'New Value', obscureText: false, controller: value),                 
                 ],
               ),
             ),
@@ -241,15 +215,8 @@ void editInformation(BuildContext context){
               MyButton(
                 onTap: (){
                   myClientController.dispose();
-                  name1.dispose();
-                  name2.dispose();
-                  name3.dispose();
-                  email1.dispose();
-                  email2.dispose();
-                  email3.dispose();
-                  phnNum1.dispose();
-                  phnNum2.dispose();
-                  phnNum3.dispose();  
+                  attribute.dispose();
+                  value.dispose();
                   Navigator.pop(context);
                 }, 
                 color:Colors.red[300]!, 
@@ -262,22 +229,12 @@ void editInformation(BuildContext context){
                   if(valid){
                     final data = {
                       'name': myClientController.text,
-                      'lastUpdated': DateTime.now().toString(),
+                      'lastUpdated': DateTime.now().toIso8601String().substring(0, 19),
 
-                      'name1': name1.text,
-                      'email1': email1.text,
-                      'phnNum1': phnNum1.text,
-
-                      'name2': name2.text,
-                      'email2': email2.text,
-                      'phnNum2': phnNum2.text,
-
-                      'name3': name3.text,
-                      'email3': email3.text,
-                      'phnNum3': phnNum3.text,
+                      attribute.text: value.text,
                     };
                     
-                    context.read<InfoBloc>().add(AddInformation(client: Client.fromJson(data)));
+                    context.read<InfoBloc>().add(EditInformation(information: data));
 
                     Navigator.pop(context);
 
